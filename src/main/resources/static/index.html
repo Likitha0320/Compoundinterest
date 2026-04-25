@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Interest Microservice</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .api-section {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .endpoint {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .method {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #f0f0f0;
+            padding: 8px;
+            border-radius: 3px;
+            word-break: break-all;
+        }
+        .parameter {
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .example {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 3px;
+            margin: 10px 0;
+        }
+        .example-link {
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .example-link:hover {
+            text-decoration: underline;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Compound Interest Microservice</h1>
+        <p>Welcome to the Compound Interest Calculator API! This service calculates compound interest based on the provided parameters.</p>
+
+        <h2>📋 API Endpoint</h2>
+        
+        <div class="endpoint">
+            <div><span class="method">GET</span><span class="url">/api/compound-interest</span></div>
+            
+            <h3>Query Parameters:</h3>
+            <ul>
+                <li><span class="parameter">p</span> (required): Principal amount (initial investment)</li>
+                <li><span class="parameter">r</span> (required): Annual interest rate (as a percentage, e.g., 5 for 5%)</li>
+                <li><span class="parameter">y</span> (required): Number of years</li>
+            </ul>
+
+            <h3>Example Requests:</h3>
+            <div class="example">
+                <p><strong>Calculate compound interest on $1000 at 5% annual rate for 2 years:</strong></p>
+                <div class="url">
+                    GET /api/compound-interest?p=1000&r=5&y=2
+                </div>
+                <p>
+                    <a class="example-link" href="/api/compound-interest?p=1000&r=5&y=2" target="_blank">
+                        Try this example →
+                    </a>
+                </p>
+            </div>
+
+            <div class="example">
+                <p><strong>Calculate compound interest on $5000 at 3.5% annual rate for 10 years:</strong></p>
+                <div class="url">
+                    GET /api/compound-interest?p=5000&r=3.5&y=10
+                </div>
+                <p>
+                    <a class="example-link" href="/api/compound-interest?p=5000&r=3.5&y=10" target="_blank">
+                        Try this example →
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <h2>🧮 How It Works</h2>
+        <div class="api-section">
+            <p>The API uses the compound interest formula:</p>
+            <p style="font-size: 18px; text-align: center; margin: 20px 0;">
+                <strong>A = P(1 + r/100)<sup>y</sup></strong>
+            </p>
+            <p>Where:</p>
+            <ul>
+                <li><strong>A</strong> = Final amount (principal + interest)</li>
+                <li><strong>P</strong> = Principal amount</li>
+                <li><strong>r</strong> = Annual interest rate (percentage)</li>
+                <li><strong>y</strong> = Number of years</li>
+            </ul>
+        </div>
+
+        <h2>✨ Quick Calculator</h2>
+        <div class="api-section">
+            <div style="display: grid; gap: 10px;">
+                <label>Principal ($): <input type="number" id="principal" value="1000" min="0" step="0.01"></label>
+                <label>Interest Rate (%): <input type="number" id="rate" value="5" min="0" step="0.01"></label>
+                <label>Years: <input type="number" id="years" value="2" min="0" step="1"></label>
+                <button onclick="calculateCompoundInterest()">Calculate</button>
+                <div id="result" style="margin-top: 15px; padding: 10px; background: #e8f4f8; border-radius: 5px; display: none;"></div>
+            </div>
+        </div>
+
+        <h2>📝 Response Format</h2>
+        <div class="api-section">
+            <p>The API returns a JSON number representing the final amount:</p>
+            <div class="example">
+                <code>1102.5</code>
+            </div>
+        </div>
+
+        <footer style="text-align: center; margin-top: 40px; color: #666; border-top: 1px solid #ddd; padding-top: 20px;">
+            <p>Spring Boot Application | Port 8082</p>
+        </footer>
+    </div>
+
+    <script>
+        function calculateCompoundInterest() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value);
+            const years = parseFloat(document.getElementById('years').value);
+
+            if (!principal || !rate || !years) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            fetch(`/api/compound-interest?p=${principal}&r=${rate}&y=${years}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('result');
+                    const interest = data - principal;
+                    resultDiv.innerHTML = `
+                        <strong>Results:</strong><br>
+                        Principal: $${principal.toFixed(2)}<br>
+                        Final Amount: $${data.toFixed(2)}<br>
+                        Interest Earned: $${interest.toFixed(2)}
+                    `;
+                    resultDiv.style.display = 'block';
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                });
+        }
+
+        // Allow Enter key to calculate
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                calculateCompoundInterest();
+            }
+        });
+    </script>
+</body>
+</html>
